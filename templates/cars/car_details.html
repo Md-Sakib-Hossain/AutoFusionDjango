@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="car-details spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <img src="{{ car.image.url }}" alt="{{ car.make }} {{ car.model }}" class="img-fluid">
+      </div>
+      <div class="col-lg-6">
+        <h2>{{ car.make }} {{ car.model }} ({{ car.year }})</h2>
+        <h4>Price: ${{ car.price }}</h4>
+        <p><strong>Description:</strong></p>
+        <p>{{ car.description }}</p>
+        
+        <!-- Check the quantity to display stock availability and button -->
+        <p><strong>Stock Available:</strong> 
+          {% if car.quantity > 0 %}
+            {{ car.quantity }} Available
+            <!-- Updated form action to point to the add_to_cart URL -->
+            <form method="post" action="{% url 'add_to_cart' car.id %}">
+              {% csrf_token %}
+              {% if not user.is_superuser %}
+                <button type="submit" class="btn btn-success">Add to Cart</button>
+              {% endif %}
+
+            </form>
+          {% else %}
+            No Stock
+          {% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

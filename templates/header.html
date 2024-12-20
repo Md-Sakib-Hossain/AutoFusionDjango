@@ -1,0 +1,52 @@
+{% load static %}
+<!-- Header Section Begin -->
+<header class="header-section">
+  <div class="container-fluid">
+      <div class="inner-header">
+          <!-- Logo -->
+          <div class="logo">
+              <a href="{% url 'home' %}"><img src="{% static 'img/logo.jpg' %}" alt=""></a>
+          </div>
+          <div class="header-right">
+              <img src="{% static 'img/icons/search.png' %}" alt="" class="search-trigger">
+              <img src="{% static 'img/icons/man.png' %}" alt="">
+          </div>
+
+          <!-- User Access -->
+          {% if not user.is_authenticated %}
+              <div class="user-access">
+                  <a href="{% url 'login' %}">Register</a>
+                  <a href="{% url 'login' %}" class="in">Sign in</a>
+              </div>
+          {% else %}
+              <div class="user-access">
+                  <a href="{% url 'logout' %}">Logout</a>
+              </div>
+          {% endif %}
+
+          <!-- Navigation -->
+          <nav class="main-menu mobile-menu">
+              <ul>
+                  <li><a  href="{% url 'home' %}">Home</a></li>
+                  <li><a href="{%url 'allcars'%}">All Cars</a>
+                      
+                  </li>
+                  <li><a href="./product-page.html">Car Services</a></li>
+
+                  <!-- Conditional Links for Authenticated Users -->
+                  {% if user.is_authenticated %}
+                      {% if not user.is_superuser %}
+                          <li><a href="{% url 'cart'%}"><img src="{% static 'img/icons/bag.jpg' %}" alt="">
+                            </a></li>
+                      {% else %}
+                      <li><a href="{% url 'admin_dashboard' %}">Product Dashboard</a></li>
+
+                      {% endif %}
+                  {% endif %}
+
+                  
+              </ul>
+          </nav>
+      </div>
+  </div>
+</header>
