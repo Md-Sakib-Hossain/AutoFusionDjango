@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="all-cars spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        
+        
+        <div class="row">
+          {% if cars %}
+            {% for car in cars %}
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <img src="{{ car.image.url }}" alt="{{ car.make }} {{ car.model }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                  <h5 class="card-title">{{ car.make }} {{ car.model }}</h5>
+                  <p class="card-text">Price: ${{ car.price }}</p>
+                  <a href="{% url 'car_details' car.id %}" class="btn btn-primary">View Details</a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div class="col-12 text-center">
+              <p>No cars available.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
