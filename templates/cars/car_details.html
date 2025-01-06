@@ -14,24 +14,64 @@
         <p><strong>Description:</strong></p>
         <p>{{ car.description }}</p>
         
-        <!-- Check the quantity to display stock availability and button -->
+        <!-- Stock availability check -->
         <p><strong>Stock Available:</strong> 
           {% if car.quantity > 0 %}
             {{ car.quantity }} Available
-            <!-- Updated form action to point to the add_to_cart URL -->
+            <!-- Add to Cart form -->
             <form method="post" action="{% url 'add_to_cart' car.id %}">
               {% csrf_token %}
-              {% if not user.is_superuser %}
-                <button type="submit" class="btn btn-success">Add to Cart</button>
+              {% if user.is_authenticated %}
+                {% if not user.is_superuser %}
+                  <button type="submit" class="btn btn-success">Add to Cart</button>
+                {% endif %}
+              {% else %}
+                <h5 style="color: red;">Sign in to add to your cart.</h5>
               {% endif %}
-
             </form>
           {% else %}
             No Stock
           {% endif %}
         </p>
+
+        <!-- Add to Wishlist form -->
+        <p>
+          <form method="post" action="{% url 'add_to_wishlist' car.id %}">
+            {% csrf_token %}
+            {% if user.is_authenticated %}
+              {% if not user.is_superuser %}
+                <button type="submit" class="btn btn-primary">Add to Wishlist</button>
+              {% endif %}
+            {% else %}
+              <h5 style="color: red;">Sign in to add to your wishlist.</h5>
+            {% endif %}
+          </form>
+        </p>
       </div>
     </div>
+
+    <!-- Car Recommendations based on price -->
+    {% if recommended_cars %}
+    <div class="row">
+      <div class="col-12">
+        <h3>Recommended Cars</h3>
+        <div class="row">
+          {% for recommended_car in recommended_cars %}
+            <div class="col-md-4">
+              <div class="card">
+                <img src="{{ recommended_car.image.url }}" alt="{{ recommended_car.make }} {{ recommended_car.model }}" class="card-img-top">
+                <div class="card-body">
+                  <h5 class="card-title">{{ recommended_car.make }} {{ recommended_car.model }}</h5>
+                  <p class="card-text">Price: ${{ recommended_car.price }}</p>
+                  <a href="{% url 'car_details' recommended_car.id %}" class="btn btn-primary">View Details</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
   </div>
 </section>
 {% endblock content %}

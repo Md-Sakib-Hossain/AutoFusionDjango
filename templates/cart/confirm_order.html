@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Confirm Your Order</h2>
+
+    <!-- Display total price -->
+    <div class="col-12 text-end mt-3">
+        <h4>Total Bill: ${{ total_price }}</h4>
+    </div>
+
+    <!-- Credit Card and Shipping Form -->
+    <div class="col-12 text-end mt-3">
+        <form method="post" action="{% url 'confirm_order' %}" id="payment-form">
+            {% csrf_token %}
+            <div class="row">
+                <!-- Credit Card Number -->
+                <div class="col-12">
+                    <label for="card-number" class="form-label">Credit Card Number</label>
+                    <input type="text" class="form-control" id="card-number" name="card_number" placeholder="1234 5678 9012 3456" required>
+                </div>
+
+                <!-- Expiry Date -->
+                <div class="col-6 mt-2">
+                    <label for="expiry-date" class="form-label">Expiry Date</label>
+                    <input type="text" class="form-control" id="expiry-date" name="expiry_date" placeholder="MM/YY" required>
+                </div>
+
+                <!-- CVV -->
+                <div class="col-6 mt-2">
+                    <label for="cvv" class="form-label">CVV</label>
+                    <input type="text" class="form-control" id="cvv" name="cvv" placeholder="123" required>
+                </div>
+
+                <!-- Cardholder Name -->
+                <div class="col-12 mt-2">
+                    <label for="cardholder-name" class="form-label">Cardholder Name</label>
+                    <input type="text" class="form-control" id="cardholder-name" name="cardholder_name" placeholder="John Doe" required>
+                </div>
+
+                <!-- Shipping Address -->
+                <div class="col-12 mt-3">
+                    <label for="shipping-address" class="form-label">Shipping Address</label>
+                    <input type="text" class="form-control" id="shipping-address" name="shipping_address" placeholder="123 Main St" required>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="col-12 text-end mt-3">
+                    <button type="submit" class="btn btn-primary">Confirm Order</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

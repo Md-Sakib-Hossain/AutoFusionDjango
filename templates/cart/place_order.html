@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="d-flex justify-content-center mt-5">
+    <div class="shadow p-4 rounded bg-white" style="max-width: 600px; width: 100%; border: 1px solid #ddd;">
+        <div class="text-center mb-4">
+            <img src="{% static 'img/icons/credit-card.png' %}" alt="Credit Card" style="width: 500px; height: 100px;">
+            <h2 class="mt-3">Confirm Your Order</h2>
+        </div>
+
+        <!-- Total price -->
+        <div class="text-center mb-4">
+            <h4>Total Bill: <span class="text-success">${{ total_price }}</span></h4>
+        </div>
+
+        <!-- Credit Card and Shipping Form -->
+        <form method="post" action="{% url 'confirm_order' %}" id="payment-form">
+            {% csrf_token %}
+            <div class="row">
+                <!-- Credit Card Number -->
+                <div class="col-12 mb-3">
+                    <label for="card-number" class="form-label">Credit Card Number</label>
+                    <input type="text" class="form-control" id="card-number" name="card_number" placeholder="1234 5678 9012 3456" required>
+                </div>
+
+                <!-- Expiry Date -->
+                <div class="col-6 mb-3">
+                    <label for="expiry-date" class="form-label">Expiry Date</label>
+                    <input type="text" class="form-control" id="expiry-date" name="expiry_date" placeholder="MM/YY" required>
+                </div>
+
+                <!-- CVV -->
+                <div class="col-6 mb-3">
+                    <label for="cvv" class="form-label">CVV</label>
+                    <input type="text" class="form-control" id="cvv" name="cvv" placeholder="123" required>
+                </div>
+
+                <!-- Cardholder Name -->
+                <div class="col-12 mb-3">
+                    <label for="cardholder-name" class="form-label">Cardholder Name</label>
+                    <input type="text" class="form-control" id="cardholder-name" name="cardholder_name" placeholder="John Doe" required>
+                </div>
+
+                <!-- Shipping Address -->
+                <div class="col-12 mb-3">
+                    <label for="shipping-address" class="form-label">Shipping Address</label>
+                    <input type="text" class="form-control" id="shipping-address" name="shipping_address" placeholder="123 Main St" required>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="col-12 text-center mt-4">
+                    <button type="submit" class="btn btn-success btn-lg">Confirm Order</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

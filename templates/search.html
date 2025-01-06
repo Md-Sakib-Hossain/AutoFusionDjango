@@ -1,0 +1,173 @@
+{% include 'base.html' %}
+{% load static %}
+
+<!-- Search Page Styles -->
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9fafc;
+    }
+
+    /* Title */
+    .search-title {
+        text-align: center;
+        margin: 20px 0;
+        font-size: 2rem;
+        color: #2c3e50;
+    }
+
+    /* Search Form */
+    .search-form {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+        gap: 10px;
+    }
+
+    .search-input {
+        width: 300px;
+        padding: 10px;
+        border: 2px solid #3498db;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: box-shadow 0.3s ease-in-out;
+    }
+
+    .search-input:focus {
+        outline: none;
+        box-shadow: 0 0 10px #3498db;
+    }
+
+    .search-button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    .search-button:hover {
+        background-color: #2980b9;
+    }
+
+    /* Search Results */
+    .results-title {
+        text-align: center;
+        margin: 30px 0;
+        font-size: 1.5rem;
+        color: #2c3e50;
+    }
+
+    .car-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        list-style: none;
+        padding: 0;
+    }
+
+    .car-item {
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    .car-card {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        width: 300px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .car-card:hover {
+        transform: scale(1.05);
+    }
+
+    .car-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .car-details {
+        padding: 15px;
+    }
+
+    .car-details h3 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        color: #2c3e50;
+    }
+
+    .car-details p {
+        margin: 5px 0;
+        font-size: 0.9rem;
+        color: #7f8c8d;
+    }
+
+    /* No Results / Query Messages */
+    .no-results, .no-query {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #e74c3c;
+        margin-top: 30px;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<!-- Page Title -->
+<h1 class="search-title">Search for a Car</h1>
+
+<!-- Search Bar -->
+<form method="get" action="{% url 'search' %}" class="search-form">
+    <input type="text" name="query" placeholder="Enter car make or model" value="{{ query }}" class="search-input">
+    <button type="submit" class="search-button">Search</button>
+</form>
+
+<!-- Search Results -->
+{% if results %}
+    <h2 class="results-title">Search Results:</h2>
+    <ul class="car-list">
+        {% for car in results %}
+            <li class="car-item">
+                <div class="car-card">
+                    {% if car.image %}
+                        <img src="{{ car.image.url }}" alt="{{ car.make }} {{ car.model }}" class="car-image">
+                    {% endif %}
+                    <div class="car-details">
+                        <h3>{{ car.make }} {{ car.model }} ({{ car.year }})</h3>
+                        <p><strong>Price:</strong> ${{ car.price }}</p>
+                        <p><strong>Available Quantity:</strong> {{ car.quantity }}</p>
+                        <p><strong>Year:</strong> {{ car.year }}</p>
+                        {% if car.description %}
+                            <p><strong>Description:</strong> {{ car.description }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% elif query %}
+    <p class="no-results">No cars found matching your search.</p>
+{% else %}
+    <p class="no-query">Start by entering a car make or model in the search bar.</p>
+{% endif %}

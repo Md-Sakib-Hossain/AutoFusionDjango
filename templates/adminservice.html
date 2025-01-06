@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Appointments</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #868686, #888787);
+            color: #131212;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .navbar-brand {
+            color: #000000 !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: #1c1b1b !important;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #007bff !important;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            margin: 40px 0;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Service Table */
+        .service-table {
+            background: #2c2f48;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        .service-table thead {
+            background: #44475a;
+            color: #fff;
+        }
+
+        .service-table tbody tr:hover {
+            background: #5a4545;
+        }
+
+        /* Action Buttons */
+        .btn-edit {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .btn-edit:hover, .btn-delete:hover {
+            opacity: 0.8;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 10px;
+            background: #2c2f48;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'admin_dashboard' %}">⚙️ Admin Dashboard</a>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Title -->
+    <div class="container">
+        <h1 class="page-title">🛠️ Manage Appoinments</h1>
+    </div>
+
+    <!-- Service Table -->
+    <div class="container">
+        <table class="table table-striped table-dark service-table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Service</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Arrival Status</th>
+                    <th scope="col">Finishing Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in data %}
+                <tr>
+                    <th scope="row">{{ d.id }}</th>
+                    <td>{{ d.name }}</td>
+                    <td>{{ d.email }}</td>
+                    <td>{{ d.service }}</td>
+                    <td>{{ d.date }}</td>
+                    <td>
+                        {% if d.a_status == 'Arrived' %}
+                            <span class="badge bg-success">Arrived</span>
+                        {% else %}
+                            <span class="badge bg-warning">Pending</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if d.status == 'Done' %}
+                            <span class="badge bg-success">Done</span>
+                        {% else %}
+                            <span class="badge bg-warning">Pending</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if d.a_status != 'Arrived' %}
+                        <a href="{% url 'mark_service_arrived' d.id %}" class="btn btn-light btn-sm border">Arrived</a>
+                        {% endif %}
+
+
+
+
+                        {% if d.status != 'Done' %}
+                            <button class="btn btn-success btn-sm" onclick="openEmailModal('{{ d.id }}')">Done</button>
+                        {% endif %}
+                        <a href="{% url 'delete_service' d.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this service?')">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Email Modal -->
+    <div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="emailModalLabel">Send Email to User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="emailForm" method="POST" action="{% url 'mark_service_done' %}">
+                        {% csrf_token %}
+                        <input type="hidden" id="serviceId" name="service_id">
+                        <div class="mb-3">
+                            <label for="emailSubject" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="emailSubject" name="email_subject" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="emailBody" class="form-label">Body</label>
+                            <textarea class="form-control" id="emailBody" name="email_body" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Email & Mark Done</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 AutoFusion Admin Dashboard. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function openEmailModal(serviceId) {
+            document.getElementById('serviceId').value = serviceId;
+            var emailModal = new bootstrap.Modal(document.getElementById('emailModal'));
+            emailModal.show();
+        }
+    </script>
+</body>
+</html>
