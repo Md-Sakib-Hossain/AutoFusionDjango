@@ -1,0 +1,318 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoFusion - Premium Car Service</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        a:hover {
+            color: #ccc;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #fdfbfb;
+            border-bottom: 1px solid #dacece;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0a0a0a !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: #141414 !important;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #3f3e3e !important;
+        }
+
+        .logo img {
+            height: 65px;
+            width: 145px;
+        }
+
+        /* Hero Section with Video Background */
+        .hero {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .hero video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Animated Texts */
+        .hero-overlay h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            animation: slideIn 1.5s ease-out;
+        }
+
+        .hero-overlay p {
+            font-size: 1.2rem;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .hero-overlay .btn-primary {
+            margin-top: 20px;
+            background: #fff;
+            color: #000;
+            border: none;
+            animation: bounceIn 2s ease-in-out infinite alternate;
+        }
+
+        /* Keyframe Animations */
+        @keyframes slideIn {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Services Section */
+        .service-card .card {
+            background: #111;
+            border: 1px solid #333;
+            color: #fff;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .service-card .icon {
+            font-size: 3rem;
+            color: #fff;
+            animation: bounceIn 2s infinite alternate;
+        }
+
+        /* Appointment Section */
+        .appointment-section {
+            background: #111;
+            padding: 50px 0;
+        }
+
+        .appointment-section h2 {
+            margin-bottom: 20px;
+            animation: slideIn 1.5s ease-out;
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            color: #fff;
+            padding: 20px 0;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <div class="logo">
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'images/logogo.webp' %}" alt="AutoFusion Logo">
+                </a>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'servicelist' %}#">Our Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'appointment' %}">Book Appointment</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Video Background -->
+    <section class="hero">
+        <video autoplay muted loop>
+            <source src="{% static 'images/car1.mp4' %}" type="video/mp4">
+        </video>
+        <div class="hero-overlay">
+            <div class="container">
+                <h1>Welcome to AutoFusion</h1>
+                <p>Your trusted partner for car service excellence.</p>
+                <a href="{% url 'appointment' %}" class="btn btn-primary btn-lg">Book an Appointment</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="container mt-5">
+        <h2 class="text-center mb-4">Explore Our Premium Services</h2>
+        <div class="row">
+            {% for service in services %}
+            <div class="col-md-4 mb-4 service-card">
+                <div class="card text-center p-4">
+                    <div class="icon mb-3">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h5 class="card-title">{{ service.name }}</h5>
+                    <p class="card-text">{{ service.description }}</p>
+                    <p><strong>Price:</strong> ${{ service.price }}</p>
+                    <a href="#" class="btn btn-outline-light btn-sm">Learn More</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p>&copy; 2024 AutoFusion. All Rights Reserved.</p>
+            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+<!-- -------------------------------------------------------------------- -->
+ <!-- --------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------- -->
+ <!-- --------------------------------------------------------------------------- -->
+ {% load static %}
+ <footer class="footer-section spad" style="background-color: #1e1e1e; color: #fff; padding: 30px 0;">
+     <div class="container">
+         <div class="footer-widget" style="margin-bottom: 20px;">
+             <div class="row">
+                 <div class="col-lg-3 col-sm-6">
+                     <div class="single-footer-widget">
+                         <h4 style="color: #ff5722;">About us</h4>
+                         <ul style="padding-left: 0;">
+                             <li style="color: #b0b0b0;">About Us</li>
+                             <li style="color: #b0b0b0;">Community</li>
+                             <li style="color: #b0b0b0;">Jobs</li>
+                             <li style="color: #b0b0b0;">Shipping</li>
+                             <li style="color: #b0b0b0;">Contact Us</li>
+                         </ul>
+                     </div>
+                 </div>
+                 <div class="col-lg-3 col-sm-6">
+                     <div class="single-footer-widget">
+                         <h4 style="color: #ff5722;">Customer Care</h4>
+                         <ul style="padding-left: 0;">
+                             <li style="color: #b0b0b0;">Search</li>
+                             <li style="color: #b0b0b0;">Privacy Policy</li>
+                             <li style="color: #b0b0b0;">2024 Lookbook</li>
+                             <li style="color: #b0b0b0;">Shipping & Delivery</li>
+                             <li style="color: #b0b0b0;">Gallery</li>
+                         </ul>
+                     </div>
+                 </div>
+                 <div class="col-lg-3 col-sm-6">
+                     <div class="single-footer-widget">
+                         <h4 style="color: #ff5722;">Our Services</h4>
+                         <ul style="padding-left: 0;">
+                             <li style="color: #b0b0b0;">Free Shipping</li>
+                             <li style="color: #b0b0b0;">Free Returns</li>
+                             <li style="color: #b0b0b0;">Our Franchising</li>
+                             <li style="color: #b0b0b0;">Terms and Conditions</li>
+                             <li style="color: #b0b0b0;">Privacy Policy</li>
+                         </ul>
+                     </div>
+                 </div>
+                 <div class="col-lg-3 col-sm-6">
+                     <div class="single-footer-widget">
+                         <h4 style="color: #ff5722;">Information</h4>
+                         <ul style="padding-left: 0;">
+                             <li style="color: #b0b0b0;">Payment Methods</li>
+                             <li style="color: #b0b0b0;">Shipping Costs</li>
+                             <li style="color: #b0b0b0;">Product Returns</li>
+                             <li style="color: #b0b0b0;">Shipping Methods</li>
+                             <li style="color: #b0b0b0;">Product Conformity</li>
+                         </ul>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+ 
+     <!-- Logo Section -->
+
+ 
+     <!-- Social Links -->
+     <div class="social-links-warp" style="padding-top: 10px; padding-bottom: 10px;">
+         <div class="container text-center">
+            <div class="social-icons mt-3">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://pinterest.com" target="_blank"><i class="fab fa-pinterest"></i></a>
+            </div>
+         </div>
+     </div>
+ </footer>

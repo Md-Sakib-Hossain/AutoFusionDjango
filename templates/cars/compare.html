@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="car-compare spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <!-- Search Bars for Car 1 and Car 2 -->
+        <form method="GET" action="{% url 'car_compare' %}" class="w-100">
+        <div class="container">
+            <div class="row">
+                <!-- First search input (Car 1) -->
+                <div class="col-md-6">
+                  <div class="input-group">
+                    <input type="text" class="form-control" name="search_1" value="{{ search_query_1 }}" placeholder="Search for Car 1">
+                    <div class="input-group-append">
+                    </div>
+                  </div>
+                </div>
+                <!-- Second search input (Car 2) -->
+                <div class="col-md-6">
+                  <div class="input-group">
+                    <input type="text" class="form-control" name="search_2" value="{{ search_query_2 }}" placeholder="Search for Car 2">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </form>
+          
+
+        <!-- Display Cars Side by Side for Comparison -->
+        <div class="row">
+          <div class="col-md-6">
+            {% if car_1 %}
+              <div class="card">
+                <img src="{{ car_1.image.url }}" alt="{{ car_1.make }} {{ car_1.model }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                  <h5 class="card-title">{{ car_1.make }} {{ car_1.model }}</h5>
+                  <b class="card-text">Price: ${{ car_1.price }}</b><br>
+                  <!-- <p class="card-text">{{ car_1.description }}</p> -->
+                  <a href="{% url 'car_details' car_1.id %}" class="btn btn-primary">View Details</a><br>
+                  {%if car_1.price > car_2.price %}
+                  <b> This car is more Costly </b>
+                  {% elif car_1.price == car_2.price %}
+                  <b> Both Cars are equal in Price </b>
+                  {% else %}
+                  <b> This car is less costly </b>
+                  {% endif %}
+                </div>
+              </div>
+            {% else %}
+              <div class="alert alert-warning">No car found for Car 1.</div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            {% if car_2 %}
+              <div class="card">
+                <img src="{{ car_2.image.url }}" alt="{{ car_2.make }} {{ car_2.model }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                  <h5 class="card-title">{{ car_2.make }} {{ car_2.model }}</h5>
+                  <b class="card-text">Price: ${{ car_2.price }}</b><br>
+                  <!-- <p class="card-text">{{ car_2.description }}</p> -->
+                  <a href="{% url 'car_details' car_2.id %}" class="btn btn-primary">View Details</a><br>
+                  {%if car_1.price < car_2.price %}
+                  <b> This car is more Costly </b>
+                  {% elif car_1.price == car_2.price %}
+                  <b> Both Cars are Equal In price </b>
+                  {% else %}
+                  <b> This car is Less Costly </b>
+                  {% endif %}
+                </div>
+              </div>
+            {% else %}
+              <div class="alert alert-warning">No car found for Car 2.</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

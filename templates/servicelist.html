@@ -1,0 +1,236 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Car Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #000000;
+        }
+
+        /* Header Section */
+        .navbar {
+            background-color: #fdfbfb;
+            border-bottom: 1px solid #dacece;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0a0a0a !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: #141414 !important;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #3f3e3e !important;
+        }
+
+        .logo img {
+            height: 65px;
+            width: 145px;
+        }
+
+        /* Hero Section */
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(to right, #000000d0, #00000000), url('{% static "images/s_car.jpg" %}') no-repeat center center/cover;
+            color: #fff;
+            text-align: center;
+            padding: 150px 50px;
+        }
+
+        .hero-section h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem); /* Responsive font size */
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .hero-section p {
+            font-size: clamp(1rem, 2.5vw, 1.5rem); /* Responsive font size */
+            margin-bottom: 20px;
+        }
+
+
+        /* Service List */
+        .service-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .service-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .service-card .service-content {
+            padding: 15px;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .service-card p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .service-card a {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .service-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animation */
+        .service-card {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .service-card:nth-child(1) { animation-delay: 0.2s; }
+        .service-card:nth-child(2) { animation-delay: 0.4s; }
+        .service-card:nth-child(3) { animation-delay: 0.6s; }
+        .service-card:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            background: #000;
+            color: #fff;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <div class="logo">
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'images/logogo.webp' %}" alt="AutoFusion Logo">
+                </a>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'car_service' %}">Car Servicing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'appointment' %}">Book Appointment</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1 class="text-center mb-4">Explore Our Premium Services</h1>
+        <p>Dedicated to keeping your vehicle in peak condition with expert care and quality parts.</p>
+    </section>
+
+    <!-- Service List Section -->
+    <section class="service-container">
+        <div class="service-card">
+            <img src="{% static 'images/oil.jpg' %}" alt="Oil Change">
+            <div class="service-content">
+                <h3>Professional Oil Change</h3>
+                <p>Maintain your engine's health with our high-quality oil change services.</p>
+                <a href="https://en.wikipedia.org/wiki/Motor_oil#Maintenance">Learn More</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <img src="{% static 'images/tyre.jpg' %}" alt="Tire Replacement">
+            <div class="service-content">
+                <h3>Expert Tire Replacement</h3>
+                <p>Enhance road safety with precision tire fitting and replacement.</p>
+                <a href="https://en.wikipedia.org/wiki/Tire_changer">Learn More</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <img src="{% static 'images/eng.jpg' %}" alt="Engine Diagnosis">
+            <div class="service-content">
+                <h3>Advanced Engine Diagnosis</h3>
+                <p>Identify and resolve engine issues with our state-of-the-art diagnostic tools.</p>
+                <a href="https://www.checkengine.me/wiki-page">Learn More</a>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <img src="{% static 'images/brake.jpg' %}" alt="Brake Service">
+            <div class="service-content">
+                <h3>Reliable Brake Services</h3>
+                <p>Ensure your safety with comprehensive brake inspections and repairs.</p>
+                <a href="https://www.autorepairindy.com/blog/brake-safety-starts-here-simple-steps-to-ensure-your-car-stays-safe-on-the-road/#:~:text=Maintenance%20Tips%20for%20Better%20Brake%20Safety&text=By%20checking%20your%20brakes%20at,lead%20to%20reduced%20stopping%20power.">Learn More</a>
+            </div>
+        </div>
+        {% for service in data %}
+            <div class="service-card">
+                <img src="{{ service.image.url }}" alt="{{ service.title }}">
+                <div class="service-content">
+                    <h3>{{ service.title }}</h3>
+                    <p>{{ service.description }}</p>
+                    <a href="{{ service.learn }}">Learn More</a>
+                </div>
+            </div>
+        {% endfor %}
+
+    </section>
+
+
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2024 AutoFusion. Quality Service, Every Time.
+    </footer>
+</body>
+</html>

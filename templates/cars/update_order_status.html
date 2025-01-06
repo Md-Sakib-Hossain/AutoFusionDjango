@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Order Status{% endblock title %}
+
+{% block content %}
+<section class="update-order-status spad">
+  <div class="container">
+    <h2 class="text-center">Update Order Status</h2>
+    <form method="post" class="form-inline">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="status" class="mr-2">Order Status:</label>
+        <select name="status" id="status" class="form-control">
+          {% for value, label in status_choices %}
+          <option value="{{ value }}" {% if order.status == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-success ml-2">Update</button>
+    </form>
+  </div>
+</section>
+{% endblock content %}
